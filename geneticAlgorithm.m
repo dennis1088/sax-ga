@@ -64,9 +64,22 @@ for iGeneration = 1:generations
     
     % Populate child population
     for b=1:populationSize/2
+        % Chose two parent randomly from best half of population.
         parent1 = bestHalfOfPopulation(randi(populationSize/2),:);
         parent2 = bestHalfOfPopulation(randi(populationSize/2),:);
+        
+        % Crossover parents.
         [child1, child2] = twoPointCrossover(parent1, parent2);
+        
+        % Mutate Children.
+        child1{1} = gaussianConvolution(child1{1}, mutationProb,...
+            variance, 0, maxDist, false);
+        child1{2} = gaussianConvolution(child1{2}, mutationProb,...
+            variance, 0, maxDist, false);
+        child1{3} = gaussianConvolution(child1{3}, mutationProb,...
+            variance, 0, maxDays, true);
+        child1{4} = mutationProb > rand();
+        
         
     end
     
