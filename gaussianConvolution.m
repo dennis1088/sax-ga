@@ -10,7 +10,6 @@ if p >= rand(1)
         else
             n = sqrt(variance) * randn(1);
         end
-        n = sqrt(variance) * randn(1);
     end
     num = num + n;
 end

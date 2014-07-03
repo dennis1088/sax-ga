@@ -1,3 +1,5 @@
+tic
+
 % Genetic algorithm parameters.
 populationSize  = 100;
 generations     = 500;
@@ -71,6 +73,8 @@ for iGeneration = 1:generations
         % Crossover parents.
         [child1, child2] = twoPointCrossover(parent1, parent2);
         
+        originalChild = child1;
+        
         % Mutate Children.
         child1{1} = gaussianConvolution(child1{1}, mutationProb,...
             variance, 0, maxDist, false);
@@ -79,8 +83,30 @@ for iGeneration = 1:generations
         child1{3} = gaussianConvolution(child1{3}, mutationProb,...
             variance, 0, maxDays, true);
         child1{4} = mutationProb > rand();
+        for iWord=1:wordSize
+            child1{iWord+4} = char(gaussianConvolution(child1{iWord+4}, ...
+                mutationProb, variance, 97, 97+alphabetSize-1, true));
+        end
         
+        child2{1} = gaussianConvolution(child2{1}, mutationProb,...
+            variance, 0, maxDist, false);
+        child2{2} = gaussianConvolution(child2{2}, mutationProb,...
+            variance, 0, maxDist, false);
+        child2{3} = gaussianConvolution(child2{3}, mutationProb,...
+            variance, 0, maxDays, true);
+        child2{4} = mutationProb > rand();
+        for iWord=1:wordSize
+            child2{iWord+4} = char(gaussianConvolution(child2{iWord+4}, ...
+                mutationProb, variance, 97, 97+alphabetSize-1, true));
+        end
+        
+        children(b*2-1,:)   = child1;
+        children(b*2,:)     = child2;
         
     end
     
+    population = children;
+    
 end
+
+toc
