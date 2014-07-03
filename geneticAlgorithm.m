@@ -13,6 +13,20 @@ alphabetSize    = 4;
 mutationProb    = .1;
 variance        = 1;
 
+% Specify and open data file.
+dataFileName = 'data/AAPL.csv';
+dataFileID = fopen(dataFileName, 'rt');
+
+% Read the formatted data from the file.
+C = textscan(dataFileID, '%s %f %f %f %f %f %f', ...
+    'Delimiter',',', 'CollectOutput',1, 'HeaderLines',1);
+
+dates = C{1};
+data = C{2};
+fclose(dataFileID);
+data = flipud(data);
+dates = flipud(dates);
+closingPrices = data(:,4);
 
 load('alphabetBreakpoints.mat');
 
@@ -49,7 +63,7 @@ for iGeneration = 1:generations
     populationFitness = zeros(1,populationSize);
     for individual=1:populationSize
         % Calculate individual fitness
-        individualFitness = randi(100);
+        individualFitness = earningsOnInvestment(population(individual,:), closingPrices,windowSize, wordSize, alphabetSize);
         populationFitness(individual) = individualFitness;
         
         % Record best individual
