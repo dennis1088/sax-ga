@@ -59,6 +59,9 @@ for iGeneration = 1:generations
     
     % Populate child population
     for b=1:populationSize/2
+        parent1 = bestHalfOfPopulation(randi(populationSize/2),:);
+        parent2 = bestHalfOfPopulation(randi(populationSize/2),:);
+        [child1, child2] = twoPointCrossover(parent1, parent2);
         
     end
     
