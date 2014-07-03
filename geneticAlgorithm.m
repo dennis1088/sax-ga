@@ -7,6 +7,11 @@ windowSize      = 20;
 wordSize        = 5;
 alphabetSize    = 4;
 
+% Mutation parameters.
+mutationProb    = .1;
+variance        = 1;
+
+
 load('alphabetBreakpoints.mat');
 
 % Calculate index for the reference to the alphabet breakpoints. Extract
