@@ -23,9 +23,9 @@ ts.TimeInfo.Format = 'mm/dd/yy';
 plot(ts);
 
 % Declare SAX Parameters.
-windowSize = 20;
-nSegments = 5;
-alphabetSize = 3;
+windowSize = 80;
+nSegments = 8;
+alphabetSize = 4;
 
 nDataPoints = size(data,1);
 nSequences = nDataPoints - windowSize;

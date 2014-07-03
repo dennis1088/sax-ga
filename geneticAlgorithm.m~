@@ -42,24 +42,17 @@ for iGeneration = 1:generations
     populationFitness = zeros(1,populationSize);
     for individual=1:populationSize
         % Calculate individual fitness
-        individualFitness = randi(100);
+        individualFitness = 1;
         populationFitness(individual) = individualFitness;
         
         % Record best individual
-        if best{end} == -Inf || best{end} < individualFitness
+        if best(end) == -Inf || best(end) < individualFitness
             best = [population(individual,:), individualFitness];
         end
     end
-    
-    % Get best half of population
-    [populationFitness, iIndividuals] = sort(populationFitness, 'descend');
-    bestHalfOfPopulation = population(iIndividuals(1:populationSize/2),:);
-    
-    children = cell([populationSize chromosomeSize]);
+    % Get best half of 
     
     % Populate child population
-    for b=1:populationSize/2
-        
-    end
+    
     
 end
