@@ -1,8 +1,6 @@
-tic
-
 % Genetic algorithm parameters.
 populationSize  = 100;
-generations     = 500;
+generations     = 1;
 
 % SAX parameters.
 windowSize      = 20;
@@ -13,19 +11,17 @@ alphabetSize    = 4;
 mutationProb    = .1;
 variance        = 1;
 
-% Specify and open data file.
+% Data file.
 dataFileName = 'data/AAPL.csv';
-dataFileID = fopen(dataFileName, 'rt');
 
-% Read the formatted data from the file.
+% Open file and Read the formatted data from the file.
+dataFileID = fopen(dataFileName, 'rt');
 C = textscan(dataFileID, '%s %f %f %f %f %f %f', ...
     'Delimiter',',', 'CollectOutput',1, 'HeaderLines',1);
-
-dates = C{1};
-data = C{2};
 fclose(dataFileID);
-data = flipud(data);
-dates = flipud(dates);
+
+data = flipud(C{2});
+dates = flipud(C{1});
 closingPrices = data(:,4);
 
 load('alphabetBreakpoints.mat');
@@ -35,6 +31,16 @@ load('alphabetBreakpoints.mat');
 iBreakpoint = alphabetSize - 1;
 breakpoints = alphabetBreakpoints(1:iBreakpoint,iBreakpoint);
 
+nDataPoints = size(data,1);
+nSequences = nDataPoints - windowSize;
+saxSequences = cell(nSequences,1);
+
+% Preform sax reduction on sliding window of time series.
+for i=1:nSequences
+    saxSequences{i} = reduceToSax(closingPrices(i:i+windowSize-1)...
+        ,wordSize, alphabetSize, alphabetBreakpoints);
+end
+
 % Calculate maximum values for decision paramters in chromosome.
 maxSimpleDistance = alphabetSize-1;
 maxDist = breakpoints(end) * 2;
@@ -42,7 +48,6 @@ maxMinDistance = sqrt(windowSize/wordSize)*sqrt(maxDist^2 * wordSize);
 maxDays = 100; % This will be the number of days in the stock time series
 
 chromosomeSize = wordSize + 4;
-
 population = cell([populationSize chromosomeSize]);
 
 % Generate random population
@@ -63,7 +68,9 @@ for iGeneration = 1:generations
     populationFitness = zeros(1,populationSize);
     for individual=1:populationSize
         % Calculate individual fitness
-        individualFitness = earningsOnInvestment(population(individual,:), closingPrices,windowSize, wordSize, alphabetSize);
+        individualFitness = earningsOnInvestment( ...
+            population(individual,:), closingPrices, saxSequences, ...
+            windowSize, wordSize, alphabetSize, breakpoints);
         populationFitness(individual) = individualFitness;
         
         % Record best individual
@@ -122,5 +129,3 @@ for iGeneration = 1:generations
     population = children;
     
 end
-
-toc

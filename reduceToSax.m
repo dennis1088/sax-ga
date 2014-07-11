@@ -1,18 +1,16 @@
-function [ saxSequence ] = reduceToSax( timeSeries, nSegments, alphabetSize )
+function [ saxSequence ] = reduceToSax( timeSeries, nSegments, alphabetSize, alphabetBreakpoints )
 %REDUCETOSAX Reduce a time series to its Symbolic Aggregate approXimation
 %representation.
 %   SAX allows a time series of arbitrary length n to be reduced to a
 %   string of arbitrary length w, (w < n, typically w << n). The alphabet
 %   size is also an arbitrary integer a, where a > 2.
 
-% Load in reference table for gaussian distribution breakpoints.
-load('alphabetBreakpoints.mat');
-
 segmentSize = size(timeSeries,1)/nSegments;
 
 % Normalize time series using standard score and reduce dimensionality via
 % Piecewise Aggregate Approximation.
-normalizedSeries = (timeSeries - mean(timeSeries)) ./ std(timeSeries);
+%normalizedSeries = (timeSeries - mean(timeSeries)) ./ std(timeSeries);
+normalizedSeries = zscore(timeSeries);
 paaSequence = mean(reshape(normalizedSeries,segmentSize,nSegments));
 
 % Calculate index for the reference to the alphabet breakpoints. Extract
