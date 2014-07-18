@@ -66,17 +66,19 @@ best = [cell(1,chromosomeSize),-Inf];
 
 for iGeneration = 1:generations
     populationFitness = zeros(1,populationSize);
-    for individual=1:populationSize
+    parfor individual=1:populationSize
         % Calculate individual fitness
         individualFitness = earningsOnInvestment( ...
             population(individual,:), closingPrices, saxSequences, ...
             windowSize, wordSize, alphabetSize, breakpoints);
         populationFitness(individual) = individualFitness;
-        
-        % Record best individual
-        if best{end} == -Inf || best{end} < individualFitness
-            best = [population(individual,:), individualFitness];
-        end
+    end
+    
+    [bestFitness, ibestFitIndividual] = max(populationFitness);
+    
+    % Record best individual
+    if best{end} < bestFitness
+        best = [population(ibestFitIndividual,:), bestFitness];
     end
     
     % Get best half of population
