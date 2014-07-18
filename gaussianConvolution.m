@@ -4,10 +4,13 @@ function [ num ] = gaussianConvolution( num, p, variance, min, max, isInteger )
 
 if p >= rand(1)
     n = -Inf;
-    while not(min <= num + n && num + n <= max)
-        if isInteger
-            n = randi(3) - 2;
-        else
+    if isInteger
+        n = randi(3) - 2;
+        if not(min <= num + n && num + n <= max)
+            n = -n;
+        end
+    else
+        while not(min <= num + n && num + n <= max)
             n = sqrt(variance) * randn(1);
         end
     end
