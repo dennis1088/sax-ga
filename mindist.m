@@ -9,26 +9,28 @@ function [ distance ] = mindist( pPattern, qPattern, alphabetSize, ...
 %breakpoints = alphabetBreakpoints(1:iBreakpoint,iBreakpoint);
 
 % Generate PAA coefficients distance look up table.
-distLookup = zeros(alphabetSize);
-
-for r=1:alphabetSize
-    for c=1:alphabetSize
-        if abs(r-c)>1
-           distLookup(r,c) = breakpoints(max(r,c)-1) ...
-               - breakpoints(min(r,c));
+persistent distLookup;
+if isempty(distLookup)
+    distLookup = zeros(alphabetSize);
+    for r=1:alphabetSize
+        for c=1:alphabetSize
+            if abs(r-c)>1
+                distLookup(r,c) = breakpoints(max(r,c)-1) ...
+                    - breakpoints(min(r,c));
+            end
         end
     end
 end
 
 % Generate indices for the distance look up table from patterns and
 % calculate the distance of both patterns.
-idistLookup = sub2ind(size(distLookup),pPattern-96,qPattern-96);
+%idistLookup = sub2ind(size(distLookup),pPattern-96,qPattern-96);
 distSum = 0;
 for i=1:size(pPattern,2)
     distSum = distSum + distLookup(pPattern(i)-96,qPattern(i)-96);
 end
-distance = sqrt(timeSeriesSize/size(pPattern,2)) ...
-    * sqrt(sum(distLookup(idistLookup).^2));
+
+distance = sqrt(timeSeriesSize/size(pPattern,2)) * sqrt(distSum^2);
 
 end
 

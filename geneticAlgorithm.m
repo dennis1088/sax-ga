@@ -1,5 +1,5 @@
 % Genetic algorithm parameters.
-populationSize  = 100;
+populationSize  = 500;
 generations     = 1;
 
 % SAX parameters.
@@ -12,7 +12,7 @@ mutationProb    = .1;
 variance        = 1;
 
 % Data file.
-dataFileName = 'data/AAPL.csv';
+dataFileName = 'data/AAPL_training.csv';
 
 % Open file and Read the formatted data from the file.
 dataFileID = fopen(dataFileName, 'rt');

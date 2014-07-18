@@ -14,5 +14,17 @@ if p >= rand(1)
     num = num + n;
 end
 
+% if p >= rand(1)
+%     n = -Inf;
+%     if isInteger
+%         n = randi(3) - 2;
+%     else
+%         n = sqrt(variance) * randn(1);
+%     end
+%     if num + n < max
+%     num = num + n;
+%     else
+% end
+
 end
 
