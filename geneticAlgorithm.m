@@ -49,6 +49,9 @@ maxDays = 100; % This will be the number of days in the stock time series
 
 chromosomeSize = wordSize + 4;
 population = cell([populationSize chromosomeSize]);
+bestGAIteration = [cell(1,chromosomeSize),-Inf];
+
+for iIteration=1:1
 
 % Generate random population
 for i=1:populationSize
@@ -130,4 +133,10 @@ for iGeneration = 1:generations
     
     population = children;
     
+end
+
+if bestGAIteration{end} < best{end}
+    bestGAIteration = best;
+end
+
 end
