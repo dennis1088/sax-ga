@@ -1,6 +1,7 @@
+tic
 % Genetic algorithm parameters.
 populationSize  = 500;
-generations     = 1;
+generations     = 50;
 
 % SAX parameters.
 windowSize      = 20;
@@ -12,7 +13,7 @@ mutationProb    = .1;
 variance        = 1;
 
 % Data file.
-dataFileName = 'data/AAPL_training.csv';
+dataFileName = 'data/XOM_training.csv';
 
 % Open file and Read the formatted data from the file.
 dataFileID = fopen(dataFileName, 'rt');
@@ -22,7 +23,7 @@ fclose(dataFileID);
 
 data = flipud(C{2});
 dates = flipud(C{1});
-closingPrices = data(:,4);
+closingPrices = data(:,6);
 
 load('alphabetBreakpoints.mat');
 
@@ -51,7 +52,7 @@ chromosomeSize = wordSize + 4;
 population = cell([populationSize chromosomeSize]);
 bestGAIteration = [cell(1,chromosomeSize),-Inf];
 
-for iIteration=1:1
+for iIteration=1:10
 
 % Generate random population
 for i=1:populationSize
@@ -140,3 +141,4 @@ if bestGAIteration{end} < best{end}
 end
 
 end
+toc

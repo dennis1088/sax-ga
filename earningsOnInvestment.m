@@ -1,10 +1,11 @@
-function [ earnings ] = earningsOnInvestment( decisionParameters, closingPrices, ...
+function [ earnings, firstPurchasePrice] = earningsOnInvestment( decisionParameters, closingPrices, ...
     saxSequences, windowSize, nSegments, alphabetSize, alphabetBreakpoints )
 %EARNINGSONINVESTMENT Summary of this function goes here
 %   Detailed explanation goes here
 stockBought = false;
 balance = 0;
 daysOfOwnership = 0;
+firstPurchasePrice = -1;
 
 distanceToBuy = decisionParameters{1};
 distanceToSell = decisionParameters{2};
@@ -30,6 +31,9 @@ for i=1:size(saxSequences)
         stockBought = true;
         balance = balance - closingPrices(i + windowSize - 1);
         daysOfOwnership = 1;
+        if firstPurchasePrice == -1
+            firstPurchasePrice = closingPrices(i + windowSize - 1);
+        end
     elseif distance > distanceToSell && stockBought
         stockBought = false;
         balance = balance + closingPrices(i + windowSize - 1);
