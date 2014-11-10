@@ -1,12 +1,12 @@
 % SAX parameters.
-windowSize      = 20;
-wordSize        = 5;
-alphabetSize    = 4;
+windowSize      = 10;
+wordSize        = 2;
+alphabetSize    = 7;
 
-strategy = {4.19048821063574, 3.90070725574381, 45, 0, 'a', 'a', 'c', 'a', 'a'};
+strategy = {2.92963360957959,4.89040628000013,3,0,'f','d'};
 
 % Data file.
-dataFileName = 'data/CNL_testing.csv';
+dataFileName = 'data/CAH_testing_2.csv';
 
 % Open file and Read the formatted data from the file.
 dataFileID = fopen(dataFileName, 'rt');
@@ -39,5 +39,5 @@ end
     strategy, closingPrices, saxSequences, ...
     windowSize, wordSize, alphabetSize, breakpoints);
 
-roi = (profit - firstPurchasePrice)/firstPurchasePrice;
+roi = profit/firstPurchasePrice;
  

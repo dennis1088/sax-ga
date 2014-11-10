@@ -4,16 +4,16 @@ populationSize  = 500;
 generations     = 50;
 
 % SAX parameters.
-windowSize      = 20;
-wordSize        = 5;
-alphabetSize    = 4;
+windowSize      = 10;
+wordSize        = 2;
+alphabetSize    = 7;
 
 % Mutation parameters.
 mutationProb    = .1;
 variance        = 1;
 
 % Data file.
-dataFileName = 'data/XOM_training.csv';
+dataFileName = 'data/CAH_training.csv';
 
 % Open file and Read the formatted data from the file.
 dataFileID = fopen(dataFileName, 'rt');
@@ -67,6 +67,7 @@ for i=1:populationSize
 end
 
 best = [cell(1,chromosomeSize),-Inf];
+generationsBest = zeros(1,generations);
 
 for iGeneration = 1:generations
     populationFitness = zeros(1,populationSize);
@@ -79,10 +80,14 @@ for iGeneration = 1:generations
     end
     
     [bestFitness, ibestFitIndividual] = max(populationFitness);
+    generationsBest(iGeneration) = bestFitness;
     
     % Record best individual
     if best{end} < bestFitness
+        generationsBest(iGeneration) = bestFitness;
         best = [population(ibestFitIndividual,:), bestFitness];
+    else
+        generationsBest(iGeneration) = best{end};
     end
     
     % Get best half of population
